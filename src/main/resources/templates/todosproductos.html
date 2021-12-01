@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es"
+xmlns:th="http://www.thymeleaf.org">
+<head th:replace="plantillas/plantilla :: head">
+</head>
+<body class="bg-light container-fluid">
+	
+	<header th:replace="plantillas/plantilla :: header"></header>
+
+	<div style="margin-top: 280px" class="text-dark container">
+		<a class="btn btn-primary" th:href="@{/productos/nuevo/}">Nuevo Producto</a>
+		<div th:if="${productos!=null}">
+			<table class="table text-center text-dark mt-5">
+				<tr>
+					<th>ID Producto</th>
+					<th>Nombre</th>
+					<th>Precio</th>
+					<th>Editar</th>
+					<th>Eliminar</th>
+				</tr>
+				<tr th:each="producto : ${productos}">
+					<td th:text="${producto.idProductos}" class="text-center fs-3 fw-light"></td>
+					 <td th:text="${producto.nombreProductos}" class="text-center fs-3 fw-light"></td>
+					<td th:text="${producto.precioProductos}" class="text-center fs-3 fw-light"></td>
+					<td>
+						<a class="btn btn-warning" th:href="@{/productos/editar/} + ${producto.idProductos}">Editar</a>
+					</td>
+					<td>
+						<form method="POST" th:action="@{/productos/eliminar/} + ${producto.idProductos}">
+							<input type="submit" class="btn btn-danger" value="Eliminar">
+						</form>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div th:if="${productos == null}"><p class="text-center fs-3 fw-light">No hay nada :c</p> </div>
+	</div>
+	
+	<footer th:replace="plantillas/plantilla :: footer"></footer>
+</body>
+</html>

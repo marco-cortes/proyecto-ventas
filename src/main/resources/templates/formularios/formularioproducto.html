@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="es" 
+xmlns:th="http://www.thymeleaf.org">
+<head th:replace="plantillas/plantilla :: head"></head>
+<body class="bg-light container-fluid">
+	
+	<header th:replace="plantillas/plantilla :: header"></header>
+	
+	<div style="margin-top: 100px" class="text-dark container">
+		<h1 class="text-center text-secondary">Formulario</h1>
+		<div class="row justify-content-center">
+			<div class="col col-md-4">
+				<form th:action="@{/facturas/} + ${idClientes} + @{/productos/} + ${idFacturas} + @{/guardar} " method="post">
+					<select name="idProductos" class="form-select">
+						<option th:each="producto : ${productos}" th:text="${producto.nombreProductos}" th:value="${producto.idProductos}">
+						</option>
+					</select>
+					<br/><br/>
+					<div class="d-grid gap-2">
+						<input type="submit" name="guardar" th:value="Guardar"
+							class="btn btn-primary" />
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<footer th:replace="plantillas/plantilla :: footer"></footer>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="es" 
+xmlns:th="http://www.thymeleaf.org">
+<head th:replace="plantillas/plantilla :: head"></head>
+<body class="bg-light container-fluid">
+	
+	<header th:replace="plantillas/plantilla :: header"></header>
+	
+	<div style="margin-top: 100px" class="text-dark container">
+		<h1 class="text-center text-secondary">Formulario</h1>
+		<div class="row justify-content-center">
+			<div class="col col-md-4">
+				<form th:action="@{/productos/guardar}" method="post" th:object="${producto}">
+					<input type="hidden" name="idProductos" th:field="*{idProductos}">
+					<div class="mb-3">
+						<label for="nombre" class="form-label" th:text="Nombre"></label>
+						<input type="text" class="form-control" id="nombre" placeholder="Ingrese su nombre aqui." name="nombreProductos" th:field="*{nombreProductos}" />
+					</div>
+					<div class="mb-3">
+						<label for="apellido" class="form-label" th:text="Apellido"></label>
+						<input type="text" class="form-control" id="apellido" placeholder="Ingrese sus apellidos aqui." name="precioProductos" th:field="*{precioProductos}" />
+					</div>
+					<div class="d-grid gap-2">
+						<input type="submit" name="guardar" th:value="Guardar"
+							class="btn btn-primary" />
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<footer th:replace="plantillas/plantilla :: footer"></footer>
+</body>
+</html>
