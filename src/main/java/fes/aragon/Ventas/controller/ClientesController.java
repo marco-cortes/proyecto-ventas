@@ -5,9 +5,7 @@ import fes.aragon.Ventas.services.impl.ClientesServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class ClientesController {
@@ -19,7 +17,8 @@ public class ClientesController {
     public String inicio(Clientes cliente, Model modelo) {
         var clientes = clientesService.listaClientes();
         modelo.addAttribute("clientes", clientes);
-        return "index";
+        modelo.addAttribute("cliente", cliente);
+        return "tabla-clientes";
     }
 
     @GetMapping("/nuevo")
@@ -34,11 +33,10 @@ public class ClientesController {
         return "redirect:/";
     }
 
-    @GetMapping("/editar/{idClientes}")
-    public String editar(@PathVariable(value="idClientes") int idClientes, Model model) {
-        Clientes cliente = clientesService.getCliente(idClientes);
-        model.addAttribute("clientes", cliente);
-        return "formularios/formularioClientes";
+    @RequestMapping("/editar/{idClientes}")
+    @ResponseBody
+    public Clientes editar(@PathVariable(value="idClientes") int idClientes, Model model) {
+        return  clientesService.getCliente(idClientes);
     }
 
     @PostMapping("/eliminar/{idClientes}")

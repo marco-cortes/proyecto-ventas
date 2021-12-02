@@ -1,5 +1,6 @@
 package fes.aragon.Ventas.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,7 +28,7 @@ import javax.persistence.Table;
 @NamedQueries({
 	@NamedQuery(name="cliente.todos",query="SELECT u FROM Clientes u"),
 	@NamedQuery(name="cliente.datos",query="SELECT u FROM Clientes u WHERE u.idClientes=:id"),
-	@NamedQuery(name="cliente.facturas", query = "SELECT u FROM Facturas u WHERE u.idFacturas=:id")
+	@NamedQuery(name="cliente.facturas", query = "SELECT u FROM Facturas u WHERE u.idClientes=:id")
 })
 public class Clientes {
 	@Id
@@ -41,6 +42,7 @@ public class Clientes {
 	@Column(name="apellido_clientes")
 	private String apellidoClientes;
 
+	@JsonBackReference
 	@OneToMany(mappedBy = "idClientes",fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Facturas> listaFacturas;
 

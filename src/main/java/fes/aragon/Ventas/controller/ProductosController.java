@@ -5,10 +5,7 @@ import fes.aragon.Ventas.services.impl.ProductosServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/productos")
@@ -18,9 +15,10 @@ public class ProductosController {
     private ProductosServiceImpl productosService;
 
     @GetMapping("")
-    public String inicio(Model modelo) {
+    public String inicio(Model modelo, Productos producto) {
         modelo.addAttribute("productos", productosService.getProductos());
-        return "todosproductos";
+        modelo.addAttribute("producto", producto);
+        return "tabla-productos";
     }
 
     @GetMapping("/nuevo")
@@ -35,11 +33,14 @@ public class ProductosController {
         return "redirect:/productos";
     }
 
-    @GetMapping("/editar/{idProductos}")
-    public String editar(@PathVariable(value="idProductos") int idProductos, Model model) {
-        Productos producto = productosService.getProducto(idProductos);
-        model.addAttribute("producto", producto);
-        return "formularios/formularioproductosdos";
+    @RequestMapping("/editar/{idProductos}")
+    @ResponseBody
+    public Productos editar(@PathVariable(value="idProductos") int idProductos, Model model) {
+        Productos p = new Productos();
+        p.setIdProductos(productosService.getProducto(idProductos).getIdProductos());
+        p.setNombreProductos(productosService.getProducto(idProductos).getNombreProductos());
+        p.setPrecioProductos(productosService.getProducto(idProductos).getPrecioProductos());
+        return p;
     }
 
     @PostMapping("/eliminar/{idProductos}")
