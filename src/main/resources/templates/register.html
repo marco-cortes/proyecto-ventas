@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Registro</title>
+
+    <div th:replace="plantillas/plantilla :: css"></div>
+
+</head>
+
+<body class="bg-gradient-primary">
+    <div class="container">
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-7">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">¡Crea una cuenta!</h1>
+                            </div>
+                            <form class="user" method="post" th:action="@{/register/guardar}" th:object="${usuario}">
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="text" class="form-control form-control-user" id="nombre"
+                                            placeholder="Nombre" name="nombre" th:field="*{nombre}">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control form-control-user" id="apellido"
+                                            placeholder="Apellido" name="apellido">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" class="form-control form-control-user" id="username"
+                                        placeholder="Correo electrónico" name="username" th:field="*{username}">
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="password" class="form-control form-control-user"
+                                            id="password" placeholder="Contraseña" name="password" th:field="*{password}">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="password" class="form-control form-control-user"
+                                            id="cpassword" placeholder="Confirmar contraseña" name="cpassword">
+                                    </div>
+                                </div>
+                                <input type="submit" class="btn btn-primary btn-user btn-block" value="Registrarse" />
+                            </form>
+                            <hr>
+                            <div class="text-center">
+                                <a class="small" th:href="@{/login}">¡Inicia sesión!</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger"><i class="fas fa-exclamation-circle"></i></h5>
+                    <h5 class="modal-title mx-3" th:text="${errores}" id="modalErrores"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Las contraseñas no coinciden o el correo no es válido.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" type="button" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="plantillas/plantilla :: js"></div>
+    <script type="text/javascript">
+        $('document').ready(function() {
+            if($('#modalErrores').text().length > 0){
+                $('#modalError').modal('toggle')
+            }
+        });
+    </script>
+</body>
+
+</html>

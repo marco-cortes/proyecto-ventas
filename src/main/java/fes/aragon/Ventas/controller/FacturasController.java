@@ -1,5 +1,6 @@
 package fes.aragon.Ventas.controller;
 
+import fes.aragon.Ventas.domain.Clientes;
 import fes.aragon.Ventas.domain.Facturas;
 import fes.aragon.Ventas.domain.FacturasProductos;
 import fes.aragon.Ventas.domain.Productos;
@@ -10,8 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,16 +30,20 @@ public class FacturasController {
 
     @GetMapping("/{idClientes}")
     public String getFacturas(@PathVariable(value="idClientes") int idClientes, Model model, Facturas factura){
+        Clientes c = cs.getCliente(idClientes);
+        if(c == null){
+            return "404";
+        }
         model.addAttribute("factura", factura);
         model.addAttribute("facturas", fs.getFacturas(idClientes));
         model.addAttribute("idClientes", idClientes);
-        model.addAttribute("cliente", cs.getCliente(idClientes));
+        model.addAttribute("cliente", c);
         return "tabla-facturas";
     }
 
     @RequestMapping("/{idClientes}/editar/{idFacturas}")
     @ResponseBody
-    public Facturas editar(@PathVariable(value="idClientes") int idClientes, @PathVariable(value="idFacturas") int idFacturas){
+    public Facturas editarFactura(@PathVariable(value="idClientes") int idClientes, @PathVariable(value="idFacturas") int idFacturas){
         Facturas facturas  = new Facturas();
         facturas.setIdFacturas(fs.getFactura(idFacturas).getIdFacturas());
         facturas.setReferenciaFacturas(fs.getFactura(idFacturas).getReferenciaFacturas());
@@ -46,8 +53,15 @@ public class FacturasController {
     }
 
     @PostMapping("/{idClientes}/nueva/guardar")
-    public String guardar(@PathVariable(value="idClientes") int idClientes, Facturas factura){
-        log.info("{}",factura.getIdFacturas());
+    public String guardarFactura(@PathVariable(value="idClientes") int idClientes, @Valid Facturas factura, Errors errores, Model modelo){
+        if(errores.hasErrors()){
+            System.out.println(errores.getFieldError());
+            modelo.addAttribute("errores", " Error");
+            return getFacturas(idClientes, modelo, factura);
+        }
+
+        modelo.addAttribute("errores", null);
+
         if(factura.getIdFacturas() > 0){
             fs.editarFactura(idClientes, factura.getIdFacturas(), factura);
         } else {
@@ -57,7 +71,7 @@ public class FacturasController {
     }
 
     @PostMapping("/{idClientes}/eliminar/{idFacturas}")
-    public String eliminar(@PathVariable(value="idClientes") int idClientes, @PathVariable(value="idFacturas") int idFacturas){
+    public String eliminarFactura(@PathVariable(value="idClientes") int idClientes, @PathVariable(value="idFacturas") int idFacturas){
         fs.eliminarFactura(idClientes, idFacturas);
         return "redirect:/facturas/" + idClientes;
     }
@@ -65,6 +79,23 @@ public class FacturasController {
 
     @GetMapping("/{idClientes}/productos/{idFacturas}")
     public String getProductos(@PathVariable(value="idClientes") int idClientes, @PathVariable(value="idFacturas") int idFacturas, Model model){
+        Clientes c = cs.getCliente(idClientes);
+        if(c == null){
+            return "404";
+        }
+        if(fs.getFactura(idFacturas) == null){
+            return "404";
+        }
+        boolean bandera = false;
+        for(Facturas f : c.getListaFacturas()){
+            if(f.getIdFacturas() == fs.getFactura(idFacturas).getIdFacturas()){
+                bandera = true;
+                break;
+            }
+        }
+        if(!bandera){
+            return "404";
+        }
         List<Productos> aux = new ArrayList<>();
         for(Productos p : fs.getProductos()){
             aux.add(p);
@@ -73,30 +104,10 @@ public class FacturasController {
         model.addAttribute("productos", fs.getProductos(idFacturas));
         model.addAttribute("idClientes", idClientes);
         model.addAttribute("idFacturas", idFacturas);
-        model.addAttribute("cliente", cs.getCliente(idClientes));
+        model.addAttribute("cliente", c);
         model.addAttribute("listaproductos", aux);
         return "tabla-facturas-productos";
     }
-    /*
-
-    @GetMapping("/{idClientes}/productos/{idFacturas}/nuevo")
-    public String nuevoProducto(@PathVariable(value="idClientes") int idClientes, @PathVariable(value="idFacturas") int idFacturas, Model model){
-        List<Productos> aux = new ArrayList<>();
-        for(Productos p : fs.getProductos()){
-            for(Productos pp : fs.getProductosF(idFacturas)){
-                if(p.getIdProductos() == pp.getIdProductos()){
-                    System.out.println(p.getNombreProductos());
-                } else {
-                    aux.add(p);
-                }
-            }
-        }
-        model.addAttribute("productos", aux);
-        model.addAttribute("idClientes", idClientes);
-        model.addAttribute("idFacturas", idFacturas);
-        return "formularios/formularioproducto";
-    }
-    * */
 
     @RequestMapping("/{idClientes}/productos/{idFacturas}/editar/{idProductos}")
     @ResponseBody
@@ -115,8 +126,20 @@ public class FacturasController {
     }
 
     @PostMapping("/{idClientes}/productos/{idFacturas}/guardar")
-    public String guardar(@PathVariable(value="idClientes") int idClientes, @PathVariable(value="idFacturas") int idFacturas, int idProductos, int cantidad){
-        fs.agregarProducto(idFacturas, idProductos, cantidad);
+    public String guardarProducto(@PathVariable(value="idClientes") int idClientes, @PathVariable(value="idFacturas") int idFacturas, int idProductos, String cantidad, Model modelo){
+        if(cantidad.isEmpty()) {
+            modelo.addAttribute("errores", "Error");
+            return getProductos(idClientes, idFacturas, modelo);
+        }
+        int valor = 0;
+        try {
+            valor = Integer.parseInt(cantidad);
+            modelo.addAttribute("errores", null);
+        } catch(Exception e) {
+            modelo.addAttribute("errores", "Error");
+            return getProductos(idClientes, idFacturas, modelo);
+        }
+        fs.agregarProducto(idFacturas, idProductos, valor);
         return "redirect:/facturas/{idClientes}/productos/{idFacturas}";
     }
 

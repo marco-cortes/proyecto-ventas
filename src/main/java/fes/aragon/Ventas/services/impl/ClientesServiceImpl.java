@@ -27,7 +27,8 @@ public class ClientesServiceImpl implements ClientesService {
 
     @Override
     public void guardar(Clientes cliente) {
-        cr.save(cliente);
+        if(!cliente.getNombreClientes().isEmpty() && !cliente.getApellidoClientes().isEmpty())
+            cr.save(cliente);
     }
 
     @Override
@@ -40,3 +41,12 @@ public class ClientesServiceImpl implements ClientesService {
         return cr.findById(idClientes).orElse(null);
     }
 }
+
+
+
+
+
+
+
+
+

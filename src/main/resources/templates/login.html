@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Login</title>
+
+    <div th:replace="plantillas/plantilla :: css"></div>
+
+</head>
+
+<body class="bg-gradient-primary">
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-10 col-lg-12 col-md-9">
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <div class="row">
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">¡Bienvenido!</h1>
+                                    </div>
+                                    <form class="user" method="POST" th:action="@{/login}">
+                                        <div class="form-group">
+                                            <input type="email" class="form-control form-control-user"
+                                                id="username" aria-describedby="emailHelp" name="username"
+                                                placeholder="Ingrese su correo electrónico...">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control form-control-user"
+                                                id="password" placeholder="Ingrese su contraseña" name="password">
+                                        </div>
+                                        <input type="submit" class="btn btn-primary btn-user btn-block" value="Login" />
+                                    </form>
+                                    <hr>
+                                    <div class="text-center">
+                                        <a class="small" th:href="@{/register}">¡Crea una cuenta!</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger"><i class="fas fa-exclamation-circle"></i></h5>
+                    <h5 class="modal-title mx-3" th:text="Error" id="modalErrores"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Credenciales no válidas.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" type="button" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalAviso" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-primary"><i class="fas fa-exclamation-circle"></i></h5>
+                    <h5 class="modal-title mx-3" th:text="Aviso" id="modalAvisos"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Usted ha cambiado su email, por favor inicie sesión nuevamente.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalRegistrado" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-success"><i class="fas fa-check-circle"></i></h5>
+                    <h5 class="modal-title mx-3" th:text="Mensaje" id="modalRegistrados"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Usted ha sido registrado exitosamente, inicie sesión.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" type="button" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalEliminado" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-success"><i class="fas fa-check-circle"></i></h5>
+                    <h5 class="modal-title mx-3" th:text="Mensaje" id="modalEliminados"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Su cuenta ha sido eliminada exitosamente.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" type="button" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="plantillas/plantilla :: js"></div>
+    <script type="text/javascript">
+        $('document').ready(function() {
+            const valores = window.location.search;
+            const urlParams = new URLSearchParams(valores);
+            if (urlParams.has('error')) {
+                $('#modalError').modal('toggle')
+            }
+            if (urlParams.has('aviso')) {
+                $('#modalAviso').modal('toggle')
+            }
+            if (urlParams.has('registrado')) {
+                $('#modalRegistrado').modal('toggle')
+            }
+            if (urlParams.has('eliminado')) {
+                $('#modalEliminado').modal('toggle')
+            }
+        });
+    </script>
+</body>
+
+</html>

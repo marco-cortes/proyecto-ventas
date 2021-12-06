@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
@@ -31,10 +35,14 @@ public class Facturas implements Serializable {
 	@JoinColumn(name="id_clientes",referencedColumnName = "id_clientes")
 	@ManyToOne(fetch=FetchType.EAGER)
 	private Clientes idClientes;
-	
+
+	@NotEmpty
+	@Size(min = 1)
+	@Pattern(regexp = "[A-Za-z0-9]+")
 	@Column(name="referencia_facturas")
 	private String referenciaFacturas;
 
+	@NotEmpty
 	@Column(name="fecha_facturas")
 	private String fechaFacturas;
 

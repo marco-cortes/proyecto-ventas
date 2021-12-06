@@ -14,6 +14,9 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 
 
 @Entity
@@ -25,7 +28,7 @@ public class FacturasProductos implements Serializable{
 	
 	@EmbeddedId
 	protected FacturasProductosPK facturasProductosPK;
-	
+
 	@Column(name="cantidad_facturas_productos")
 	private double cantidadFacturasProductos;
 	

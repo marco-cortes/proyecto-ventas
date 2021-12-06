@@ -8,10 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.ParameterMode;
-import javax.persistence.PersistenceContext;
-import javax.persistence.StoredProcedureQuery;
+import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -28,16 +25,26 @@ public class ProductosServiceImpl implements ProductosService {
 
     @Override
     public void guardarProducto(Productos p) {
-        pr.save(p);
+        if(!p.getNombreProductos().isEmpty() && !p.getPrecioProductos().isEmpty())
+            pr.save(p);
     }
 
     @Override
     public void eliminarProducto(int idProductos) {
         //fr.delete(aux);
+        /*
+        PROCEDIMIENTO ALMACENADO
         StoredProcedureQuery proc = em.createStoredProcedureQuery("eliminarProducto");
         proc.registerStoredProcedureParameter("producto", Integer.class, ParameterMode.IN);
         proc.setParameter("producto", idProductos);
         proc.execute();
+        */
+
+
+        Query query = em.createNativeQuery("DELETE FROM facturas_productos WHERE id_productos="+idProductos);
+        query.executeUpdate();
+        query = em.createNativeQuery("DELETE FROM productos WHERE id_productos="+idProductos);
+        query.executeUpdate();
     }
 
     @Override

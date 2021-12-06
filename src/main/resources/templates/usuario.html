@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Perfil</title>
+    <div th:replace="plantillas/plantilla :: css"></div>
+
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/}">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-laugh-wink"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">Control Clientes</div>
+            </a>
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+            <hr class="sidebar-divider">
+            <div class="sidebar-heading">
+                Opciones
+            </div>
+            <li class="nav-item active" id="nclientes">
+                <a class="nav-link" th:href="@{/}">
+                    <i class="fas fa-users"></i>
+                    <span>Clientes</span>
+                </a>
+            </li>
+            <li class="nav-item" id="nproductos">
+                <a class="nav-link" th:href="@{/productos}">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Productos</span>
+                </a>
+            </li>
+            <hr class="sidebar-divider">
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <nav th:replace="plantillas/plantilla :: header-top"></nav>
+                <div class="container-fluid">
+                    <div class="d-sm-flex align-items-center justify-content-center mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Perfil:</h1>
+                    </div>
+                    <div class="">
+                        <div class="row justify-content-center">
+                            <div class="col-xl-4 col-md-6 mb-4">
+                                <div class="card border-left-primary shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                    Nombre:</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${usuario.nombre}"></div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-user-tag fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-xl-4 col-md-6 mb-4">
+                                <div class="card border-left-success shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                    Email:</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${usuario.username}"></div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-envelope-open-text fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-xl-4 col-md-6 mb-4">
+                                <div class="card border-left-info shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Contraseña:
+                                                </div>
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col mr-2">
+                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">**********</div>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <i class="fas fa-key fa-2x text-gray-300"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-xl-4 col-md-6 mb-4">
+                                <div class="card border-left-warning shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                    Opciones</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                    <form th:action="@{/datos/eliminar}" method="post">
+                                                        <a href="#" data-toggle="modal" data-target="#editarUsuario" class="btn btn-warning btn-icon-split">
+                                                        <span class="icon text-white-50">
+                                                            <i class="fas fa-edit"></i>
+                                                        </span>
+                                                            <span class="text">Editar</span>
+                                                        </a>
+                                                        <input type="hidden" name="username" th:value="${usuario.username}">
+                                                        <button type="submit" class="btn btn-danger btn-icon-split mx-3">
+                                                            <span class="icon text-white-50">
+                                                                <i class="fas fa-trash"></i>
+                                                            </span>
+                                                            <span class="text">Eliminar</span>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-tools fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="plantillas/plantilla :: footer"></div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editarUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarUsuarioModal">Editar usuario</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <form class="user" th:action="@{/datos/guardar}" method="post" th:object="${usuario}">
+                    <div class="modal-body">
+                        <p class="mt-2 mb-3">Ingrese sus datos.</p>
+                        <div class="form-group row">
+                            <input type="hidden" name="antiguo" th:value="${usuario.username}">
+                            <div class="col mb-3 mb-sm-0">
+                                <input
+                                        type="text"
+                                        class="form-control form-control-user"
+                                        id="nombre"
+                                        placeholder="Nombre"
+                                        name="nombre"
+                                        th:field="*{nombre}" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col mb-3 mb-sm-0">
+                                <input
+                                        type="email"
+                                        class="form-control form-control-user"
+                                        id="nuevo"
+                                        placeholder="Correo electrónico"
+                                        name="username"
+                                        th:field="*{username}" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col">
+                                <input
+                                        type="password"
+                                        class="form-control form-control-user"
+                                        id="password"
+                                        placeholder="password"
+                                        name="password" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <input type="submit" class="btn btn-primary" value="Guardar"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger"><i class="fas fa-exclamation-circle"></i></h5>
+                    <h5 class="modal-title mx-3" th:text="${errores}" id="modalErrores"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Los campos no deben estar vacíos.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" type="button" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    $('document').ready(function() {
+        if($('#modalErrores').text().length > 0){
+            $('#modalError').modal('toggle')
+        }
+    });
+
+    <div th:replace="plantillas/plantilla :: js"></div>
+</body>
+
+</html>

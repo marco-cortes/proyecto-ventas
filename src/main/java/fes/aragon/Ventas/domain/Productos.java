@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.util.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name="productos")
@@ -25,10 +27,13 @@ public class Productos implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_productos")
 	private int idProductos;
-	
+
+	@NotEmpty
 	@Column(name="nombre_productos")
 	private String nombreProductos;
-	
+
+	@NotEmpty
+	@Pattern(regexp = "^[0-9]+([.][0-9]+)?$")
 	@Column(name="precio_productos")
 	private String precioProductos;
 

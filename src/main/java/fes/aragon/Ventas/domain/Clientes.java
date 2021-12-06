@@ -19,6 +19,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="clientes")
@@ -35,10 +38,16 @@ public class Clientes {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_clientes")
 	private int idClientes;
-	
+
+	@NotEmpty
+	@Size(min = 3)
+	@Pattern(regexp = "[A-Za-z]+")
 	@Column(name="nombre_clientes")
 	private String nombreClientes;
-	
+
+	@NotEmpty
+	@Size(min = 3)
+	@Pattern(regexp = "[A-Za-z]+")
 	@Column(name="apellido_clientes")
 	private String apellidoClientes;
 
