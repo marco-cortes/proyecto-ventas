@@ -22,12 +22,6 @@
                 </div>
                 <div class="sidebar-brand-text mx-3">Control Clientes</div>
             </a>
-            <hr class="sidebar-divider my-0">
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
-            </li>
             <hr class="sidebar-divider">
             <div class="sidebar-heading">
                 Opciones
@@ -158,12 +152,12 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-danger"><i class="fas fa-exclamation-circle"></i></h5>
-                    <h5 class="modal-title mx-3" th:text="${errores}" id="modalErrores"></h5>
+                    <h5 class="modal-title mx-3">Error</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">El campo de referencia no debe ser vacío y la fecha debe ser válida.</div>
+                <div class="modal-body" th:text="${errores}" id="modalErrores"></div>
                 <div class="modal-footer">
                     <button class="btn btn-danger" type="button" data-dismiss="modal">Cerrar</button>
                 </div>

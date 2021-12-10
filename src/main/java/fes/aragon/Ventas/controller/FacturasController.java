@@ -15,7 +15,10 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -55,17 +58,37 @@ public class FacturasController {
     @PostMapping("/{idClientes}/nueva/guardar")
     public String guardarFactura(@PathVariable(value="idClientes") int idClientes, @Valid Facturas factura, Errors errores, Model modelo){
         if(errores.hasErrors()){
-            System.out.println(errores.getFieldError());
-            modelo.addAttribute("errores", " Error");
+            //System.out.println(errores.getFieldError().getDefaultMessage());
+            if(errores.getFieldError().getDefaultMessage().equals("el tamaño debe estar entre 1 y 2147483647")){
+                modelo.addAttribute("errores", "los campos no deben estar vacíos");
+            } else if(errores.getFieldError().getDefaultMessage().equals("no debe estar vacío")){
+                modelo.addAttribute("errores", "los campos no deben estar vacíos");
+            } else if(errores.getFieldError().getDefaultMessage().equals("debe coincidir con \"[A-Za-z0-9]+\"")){
+                modelo.addAttribute("errores", "El campo referencia solo acepta letras y numeros (no espacios).");
+            }
+            else {
+                modelo.addAttribute("errores", errores.getFieldError().getDefaultMessage());
+            }
             return getFacturas(idClientes, modelo, factura);
         }
 
         modelo.addAttribute("errores", null);
 
-        if(factura.getIdFacturas() > 0){
-            fs.editarFactura(idClientes, factura.getIdFacturas(), factura);
-        } else {
-            fs.agregarFactura(idClientes, factura);
+        try {
+            SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+            Date now = new Date(System.currentTimeMillis());
+            if(date.parse(factura.getFechaFacturas()).after(now)){
+                modelo.addAttribute("errores", "la fecha ingresada es mayor a hoy");
+                return getFacturas(idClientes, modelo, factura);
+            }
+            if(factura.getIdFacturas() > 0){
+                fs.editarFactura(idClientes, factura.getIdFacturas(), factura);
+            } else {
+                fs.agregarFactura(idClientes, factura);
+            }
+        } catch (ParseException e) {
+            modelo.addAttribute("errores", errores.getFieldError().getDefaultMessage());
+            return getFacturas(idClientes, modelo, factura);
         }
         return "redirect:/facturas/"+idClientes;
     }

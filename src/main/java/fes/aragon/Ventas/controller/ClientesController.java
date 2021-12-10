@@ -28,8 +28,16 @@ public class ClientesController {
     @PostMapping("/guardar")
     public String guardar(@Valid Clientes cliente, Errors errores, Model modelo){
         if(errores.hasErrors()){
-            System.out.println(errores.getFieldError());
-            modelo.addAttribute("errores", " Error");
+            //System.out.println(errores.getFieldError().getDefaultMessage());
+            if(errores.getFieldError().getDefaultMessage().equals("debe coincidir con \"[A-Za-z]+\"")){
+                modelo.addAttribute("errores", "los campos no deben tener numeros, espacios o estar vacios");
+            } else if(errores.getFieldError().getDefaultMessage().equals("el tamaño debe estar entre 1 y 2147483647")){
+                modelo.addAttribute("errores", "los campos no deben estar vacíos");
+            } else if(errores.getFieldError().getDefaultMessage().equals("no debe estar vacío")){
+                modelo.addAttribute("errores", "los campos no deben estar vacíos");
+            }
+            else
+                modelo.addAttribute("errores", errores.getFieldError().getDefaultMessage());
             return inicio(cliente, modelo);
         }
         modelo.addAttribute("errores", null);

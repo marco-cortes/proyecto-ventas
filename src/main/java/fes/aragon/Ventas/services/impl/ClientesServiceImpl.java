@@ -22,7 +22,7 @@ public class ClientesServiceImpl implements ClientesService {
 
     @Override
     public List<Clientes> listaClientes() {
-        return cr.findAll();
+        return (List<Clientes>) cr.findAll();
     }
 
     @Override
@@ -41,12 +41,3 @@ public class ClientesServiceImpl implements ClientesService {
         return cr.findById(idClientes).orElse(null);
     }
 }
-
-
-
-
-
-
-
-
-

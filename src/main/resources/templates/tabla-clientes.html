@@ -22,12 +22,6 @@
                 </div>
                 <div class="sidebar-brand-text mx-3">Control Clientes</div>
             </a>
-            <hr class="sidebar-divider my-0">
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
-            </li>
             <hr class="sidebar-divider">
             <div class="sidebar-heading">
                 Opciones
@@ -74,16 +68,6 @@
                                             <th th:text="Eliminar"></th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th th:text="ID"></th>
-                                            <th th:text="Nombre"></th>
-                                            <th th:text="Apellido"></th>
-                                            <th th:text="Facturas"></th>
-                                            <th th:text="Editar"></th>
-                                            <th th:text="Eliminar"></th>
-                                        </tr>
-                                    </tfoot>
                                     <tr th:each="cliente : ${clientes}">
                                         <td th:text="${cliente.idClientes}"></td>
                                         <td th:text="${cliente.nombreClientes}"></td>
@@ -102,6 +86,7 @@
                                         </td>
                                     </tr>
                                 </table>
+                                <!--<nav th:replace="plantilla/pag-nav :: paginador"></nav>-->
                             </div>
                         </div>
                     </div>
@@ -162,12 +147,12 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-danger"><i class="fas fa-exclamation-circle"></i></h5>
-                    <h5 class="modal-title mx-3" th:text="${errores}" id="modalErrores"></h5>
+                    <h5 class="modal-title mx-3" th:text="Error"></h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Los campos no deben estar vacíos.</div>
+                <div class="modal-body" th:text="${errores}" id="modalErrores"></div>
                 <div class="modal-footer">
                     <button class="btn btn-danger" type="button" data-dismiss="modal">Cerrar</button>
                 </div>

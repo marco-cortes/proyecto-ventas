@@ -40,13 +40,13 @@ public class Clientes {
 	private int idClientes;
 
 	@NotEmpty
-	@Size(min = 3)
+	@Size(min = 1)
 	@Pattern(regexp = "[A-Za-z]+")
 	@Column(name="nombre_clientes")
 	private String nombreClientes;
 
 	@NotEmpty
-	@Size(min = 3)
+	@Size(min = 1)
 	@Pattern(regexp = "[A-Za-z]+")
 	@Column(name="apellido_clientes")
 	private String apellidoClientes;

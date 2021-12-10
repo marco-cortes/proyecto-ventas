@@ -80,6 +80,32 @@
 		</ul>
 	</nav>
 
+	<nav th:fragment="paginador">
+		<ul class="pagination">
+			<li class="page-item">
+				<span class="page-link" th:if="${page.first}">primera</span>
+				<a class="page-link" th:if="${not page.first}" th:href="@{${page.url}(page=0)}">primera</a>
+			</li>
+			<li class="page-item">
+				<span class="page-link" th:if="${not page.hasPrevious}">anterior</span>
+				<a class="page-link" th:if="${page.hasPrevious}" th:href="@{${page.url}(page=${page.paginaActual-2})}">anterior</a>
+			</li>
+			<li class="page-item" th:each="item: ${page.paginas}" th:class="${item.actual?'page-item active':'page-item'}">
+				<span class="page-link" th:if="${item.actual}" th:text="${item.numero}"></span>
+				<a class="page-link" th:if="${not item.actual}" th:href="@{${page.url}(page=${item.numero-1})}" th:text=${item.numero}></a>
+			</li>
+			<li class="page-item">
+				<span class="page-link" th:if="${not page.hasNext}">siguiente</span>
+				<a class="page-link" th:if="${page.hasNext}" th:href="@{${page.url}(page=${page.paginaActual})}">siguienter</a>
+			</li>
+			<li class="page-item">
+				<span class="page-link" th:if="${not page.last}">ultima</span>
+				<a class="page-link" th:if="${page.last}" th:href="@{${page.url}(page=${page.totalPaginas-1})}">ultima</a>
+			</li>
+		</ul>
+	</nav>
+
+
 	<div th:fragment="footer">
 		<footer class="sticky-footer bg-white">
 			<div class="container my-auto">
